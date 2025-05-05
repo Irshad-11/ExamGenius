@@ -1,0 +1,1129 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Hide scrollbar for all elements */
+*::-webkit-scrollbar {
+    display: none;
+}
+
+* {
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+/* For Firefox */
+.hide-scrollbar {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+}
+
+.hidden {
+    display: none !important;
+    transition: all 0.3s ease-in-out;
+}
+
+
+* {
+    box-sizing: border-box;
+    /* border: 1px solid #ccc; */
+    margin: 0;
+    user-select: none;
+
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    /* padding: 1rem; */
+}
+
+.navbar {
+    position: absolute;
+    top: -60px;
+    /* Hide above view */
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: #333;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: top 0.4s ease;
+    z-index: 1000;
+}
+
+.navbar.show {
+    position: static;
+    top: 0px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.navbar {
+    display: flex;
+    padding: 0px 10px;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.navbar .logo img {
+    height: 50px;
+    width: auto;
+}
+
+.navbar .links {
+    display: flex;
+    gap: 20px;
+    font-size: 1.4rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.main-area .left-side {
+    background-color: #f9faee;
+    border-top: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    width: 35%;
+    height: 100%;
+    padding: 2px 4px;
+}
+
+.main-area .right-side {
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    width: 65%;
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.hamburger {
+    display: none;
+    width: 40px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.bar {
+    fill: none;
+    stroke: #333;
+    stroke-width: 4;
+    transition: all 0.4s ease;
+}
+
+/* Animate on class toggle */
+.animate .top {
+    transform: translateY(14px) rotate(45deg) translateX(-10px);
+}
+
+.animate .middle {
+    opacity: 0;
+}
+
+.animate .bottom {
+    transform: translateY(-14px) rotate(-45deg) translateX(-10px)
+}
+
+.bar {
+    transform-origin: center;
+}
+
+.toolbar {
+    height: 60px;
+}
+
+
+
+
+
+/* Layout */
+.leftSideHeading {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* The toggle icon */
+#collapse-LeftIcon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    cursor: pointer;
+    fill: #06610a;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hover effect */
+#collapse-LeftIcon:hover {
+    fill: #0a7d0a;
+    animation: move 1s ease-in-out 2;
+}
+
+#collapse-LeftIcon:active {
+    fill: #0a7d0a;
+    transform: translateX(1px);
+}
+
+/* Collapsed icon rotation and move */
+#collapse-LeftIcon.rotated {
+    rotate: 180deg;
+    display: block;
+    right: -25px;
+    /* Moves it outside the collapsed panel */
+    top: 10px;
+}
+
+/* Collapsing the left panel */
+#left-side.collapsed {
+    display: none;
+    transition: all 0.9s ease-in-out;
+    transform: translateX(-100%);
+}
+
+@keyframes move {
+    0% {
+        transform: translateX(0px);
+    }
+
+    50% {
+        transform: translateX(-5px);
+    }
+
+    100% {
+        transform: translateX(0px);
+    }
+}
+
+
+
+.leftSideHeading h2 {
+    text-align: center;
+    font-size: 2rem;
+}
+
+.upload-btn {
+    text-align: center;
+    background-color: #06610a;
+    color: white;
+    border: none;
+    padding: 5px 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 3px;
+    margin: 20px 10px;
+}
+
+.upload-btn:hover {
+    background-color: #0a7d0a;
+}
+
+.upload-btn:active {
+    background-color: #0a7d0a;
+    transform: translateY(1px);
+}
+
+
+
+.leftSideHeading .FileUploadcontainer {
+    height: 200px;
+    width: 200px;
+    border-radius: 10px;
+    box-shadow: 4px 4px 30px rgba(0, 0, 0, .2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    gap: 5px;
+    background-color: rgba(0, 110, 255, 0.041);
+    transition: opacity 0.5s ease, transform 0.5s ease !important;
+}
+
+.leftSideHeading .FileUploadcontainer.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto !important;
+}
+
+.leftSideHeading .header {
+    flex: 1;
+    width: 100%;
+    border: 2px dashed royalblue;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.leftSideHeading .header label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.leftSideHeading .header svg {
+    cursor: pointer;
+    height: 80px;
+}
+
+.leftSideHeading .header p {
+    text-align: center;
+    color: black;
+}
+
+
+.leftSideHeading #JsonfileUpload {
+    display: none;
+}
+
+
+#listOfAllQuestion {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+}
+
+#listOfAllQuestion .questionItem {
+    position: relative;
+    display: flex;
+    gap: 5px;
+    padding: 4px;
+    border-radius: 6px;
+    background-color: rgba(0, 110, 255, 0.041);
+    justify-content: space-between;
+    align-items: center;
+}
+
+#listOfAllQuestion .questionItem:hover {
+    background-color: rgba(0, 110, 255, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+#listOfAllQuestion .questionItem .questionSerialNumber {
+    font-size: 1.7rem;
+}
+
+#listOfAllQuestion .questionItem .questionTitle {
+    display: flex;
+    height: 70px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+#listOfAllQuestion .questionItem .questionTitle .title {
+    font-size: 1.3rem;
+    text-align: center;
+    color: black;
+    white-space: nowrap;
+    /* Prevent line breaks */
+    overflow: hidden;
+    /* Hide overflowed text */
+    text-overflow: ellipsis;
+    /* Show ... when text overflows */
+    width: 280px;
+    /* Optional: set a width or max-width */
+    display: block;
+    /* Ensure the element respects box model */
+}
+
+#listOfAllQuestion .questionItem .questionTitle .QuestionUtil {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    font-size: 0.6rem;
+    align-items: flex-end;
+    justify-content: space-around;
+
+}
+
+#listOfAllQuestion .questionItem .kebabMenuIcon {
+    font-size: 1.5rem;
+    transform: translateY(30%);
+    overflow: hidden;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+#listOfAllQuestion .questionItem .kebabMenuIcon:hover {
+    color: #06610a;
+}
+
+#listOfAllQuestion .questionItem .kebabMenuShow {
+    position: absolute;
+    z-index: 1000;
+    right: 0;
+    bottom: -50%;
+    min-width: 160px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    padding: 0px 0;
+    border: 1px solid #ddd;
+    backdrop-filter: blur(6px);
+    transition: all 0.25s ease;
+    font-family: 'Segoe UI', sans-serif;
+    animation: fadeInScale 0.2s ease-out;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#listOfAllQuestion .questionItem .kebabMenuShow p {
+    padding: 3px 6px;
+    margin: 0;
+    font-size: 0.85rem;
+    color: #222;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    border-bottom: 1px solid #eee;
+}
+
+#listOfAllQuestion .questionItem .kebabMenuShow p:last-child {
+    border-bottom: none;
+}
+
+#listOfAllQuestion .questionItem .kebabMenuShow p:last-child:hover {
+    border-bottom: none;
+    background-color: #610906;
+
+}
+
+#listOfAllQuestion .questionItem .kebabMenuShow p:hover {
+    background-color: #06610a;
+    color: white;
+}
+
+
+
+
+
+.right-side .examHeader {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0px;
+    gap: 3px;
+    position: relative;
+}
+
+.right-side .examHeader h2 {
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+}
+
+.right-side .examHeader .info {
+    display: flex;
+    width: 80%;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-around;
+}
+
+
+
+
+
+
+#draggable-container {
+    position: fixed;
+    /* Let it float on screen */
+    top: 150px;
+    left: 150px;
+    cursor: grab;
+    z-index: 999;
+}
+
+#draggable-container:active {
+    cursor: grabbing;
+}
+
+
+
+.elegant-timer {
+    right: 0;
+    top: 140px;
+    position: absolute;
+    border-top: 3px solid #777777;
+    /* background: rgba(255, 255, 255, 0.1); */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    /* subtle white tint */
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+    backdrop-filter: blur(10px);
+    /* 🧊 key glassmorphism */
+    -webkit-backdrop-filter: blur(10px);
+    /* Safari support */
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Soft shadow */
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 0px 0px 10px 10px;
+}
+
+.timer-ring {
+    transform: rotate(-90deg);
+    width: 100%;
+    height: 100%;
+}
+
+.ring-bg {
+    fill: none;
+    stroke: #e6e6e6;
+    stroke-width: 12;
+}
+
+.ring-fill {
+    fill: none;
+    stroke: green;
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke-dasharray: 565.48;
+    stroke-dashoffset: 0;
+    transition: stroke 0.3s ease;
+}
+
+.timer-text {
+    position: absolute;
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: #333;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    user-select: none;
+    pointer-events: none;
+}
+
+.blink {
+    animation: blinkAnim 1s step-start infinite;
+}
+
+@keyframes blinkAnim {
+    50% {
+        opacity: 0.4;
+    }
+}
+
+
+
+
+.right-side .QuestionList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 5px;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.right-side .QuestionList .eachQuestionItem {
+    display: flex;
+    padding: 8px;
+    border-radius: 4px;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    background-color: rgba(0, 110, 255, 0.041);
+}
+
+.right-side .QuestionList .eachQuestionItem .headOfQues {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+.right-side .QuestionList .eachQuestionItem .headOfQues h2 {
+    font-size: 1.5rem;
+    color: #333;
+    text-align: left;
+}
+
+.right-side .QuestionList .eachQuestionItem .headOfQues svg {
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+}
+
+.right-side .QuestionList .eachQuestionItem .headOfQues svg:hover {
+    fill: rgb(9, 117, 36);
+    scale: 1.2;
+    transition: box-shadow 0.3s ease-in-out;
+
+}
+
+.right-side .QuestionList .eachQuestionItem .headOfQues svg:active {
+    scale: 0.98;
+}
+
+
+
+
+.right-side .QuestionList .eachQuestionItem .headOfQues .tooltip {
+    position: absolute;
+    bottom: 12px;
+    top: 10px;
+    right: 30px;
+    transform: translateX(-50%) translateY(8px);
+    width: 18rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-out;
+    pointer-events: none;
+    z-index: 50;
+    font-size: 1rem;
+}
+
+.right-side .QuestionList .eachQuestionItem .headOfQues svg:hover+.tooltip,
+.right-side .QuestionList .eachQuestionItem .headOfQues svg:focus+.tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+/* Tooltip content box */
+.right-side .QuestionList .eachQuestionItem .headOfQues .tooltip-box {
+    position: relative;
+    padding: 10px;
+    right: -136px;
+    top: -18px;
+    background: linear-gradient(to bottom right, rgba(17, 24, 39, 0.95), rgba(31, 41, 55, 0.95));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 30px rgba(79, 70, 229, 0.15);
+}
+
+/* Header section */
+.right-side .QuestionList .eachQuestionItem .headOfQues .tooltip-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.right-side .QuestionList .eachQuestionItem .headOfQues .tooltip-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(99, 102, 241, 0.2);
+    /* indigo-500/20 */
+    border-radius: 50%;
+}
+
+/* General text and icons */
+.right-side .QuestionList .eachQuestionItem .headOfQues .tooltip-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+}
+
+.right-side .QuestionList .eachQuestionItem .headOfQues .tooltip-text {
+    font-size: 12px;
+    color: #d1d5db;
+    text-align: center;
+}
+
+.right-side .QuestionList .eachQuestionItem .headOfQues .tooltip-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.right-side .QuestionList .eachQuestionItem .headOfQues .icon-small {
+    width: 16px;
+    height: 16px;
+    color: #818cf8;
+}
+
+/* Blurred glow behind tooltip */
+.right-side .QuestionList .eachQuestionItem .headOfQues .tooltip-blur-layer {
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    background: linear-gradient(to right, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+    filter: blur(12px);
+    opacity: 0.5;
+    z-index: 0;
+}
+
+/* Triangle/caret under tooltip */
+.right-side .QuestionList .eachQuestionItem .headOfQues .tooltip-caret {
+    position: absolute;
+    top: 20px;
+    right: -12px;
+    transform: translateX(-50%) rotate(45deg);
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(to bottom right, rgba(17, 24, 39, 0.95), rgba(31, 41, 55, 0.95));
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 5;
+}
+
+
+
+
+.right-side .QuestionList .eachQuestionItem .quesMainMCQ {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+    min-width: 100%;
+    /* max-width: 400px; */
+    margin: 0px 0px;
+}
+
+.right-side .QuestionList .eachQuestionItem .Options {
+    padding: 15px 20px;
+    width: 47%;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+    position: relative;
+    font-size: 1.1rem;
+}
+
+
+.right-side .QuestionList .eachQuestionItem .Options:hover {
+    border-color: #999;
+    background: #f5f5f5;
+}
+
+
+.right-side .QuestionList .eachQuestionItem .Options:active {
+    border-color: #2e7d32;
+    background: #e8f5e9;
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2);
+}
+
+.right-side .QuestionList .eachQuestionItem .Options.selected {
+    border-color: #2e7d32;
+    background: #e8f5e9;
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2);
+}
+
+
+
+
+.resultSummary {
+    background: #1e293b;
+    color: #f1f5f9;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.resultSummary h2 {
+    margin: 0;
+    font-size: 1.75rem;
+    color: #38bdf8;
+}
+
+.resultSummary p {
+    margin: 0.3rem 0;
+    font-size: 1.1rem;
+}
+
+.resultBoard {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.resultQuestion {
+    background: #f8fafc;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    border-left: 5px solid #cbd5e1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.resultQuestion h3 {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+    color: #0f172a;
+}
+
+.resultOptions {
+    margin: 0.5rem 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.resultOption {
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    background: #e2e8f0;
+    color: #1e293b;
+    transition: all 0.2s ease-in-out;
+}
+
+.resultOption.correct {
+    background: #bbf7d0;
+    color: #065f46;
+    border: 2px solid #22c55e;
+    font-weight: bold;
+}
+
+.resultOption.wrong {
+    background: #fecaca;
+    color: #991b1b;
+    border: 2px solid #ef4444;
+    font-weight: bold;
+}
+
+.resultOption.correct-actual {
+    background: #c7d2fe;
+    color: #3730a3;
+    border: 2px dashed #6366f1;
+    font-weight: bold;
+}
+
+#submitExamBtn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#submitExamBtn:hover {
+    background-color: #45a049;
+}
+
+
+
+.Toastcard {
+    bottom: 105px;
+    right: 50px;
+    width: 330px;
+    height: 60px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    padding: 1px 7px;
+    background-color: #ffffff;
+    border: 2px solid #ffa30d;
+    box-shadow: rgb(149 157 165 / 68%) -5px -8px 24px;
+    position: absolute;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 15px;
+    transform: translateX(0);
+    opacity: 1;
+    z-index: 1000 !important;
+}
+
+.Toastcard .wave {
+    position: absolute;
+    transform: rotate(90deg);
+    left: -31px;
+    top: 32px;
+    width: 80px;
+    fill: #ffa30d3a;
+}
+
+.Toastcard .icon-container {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffa30d48;
+    border-radius: 50%;
+    margin-left: 8px;
+}
+
+.Toastcard .icon {
+    width: 17px;
+    height: 17px;
+    color: #db970e;
+}
+
+.Toastcard .message-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    flex-grow: 1;
+}
+
+.Toastcard .message-text,
+.sub-text {
+    margin: 0;
+    cursor: default;
+}
+
+.Toastcard .message-text {
+    color: #db970e;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.Toastcard .sub-text {
+    font-size: 14px;
+    color: #555;
+}
+
+.Toastcard .cross-icon {
+    width: 18px;
+    height: 18px;
+    color: #555;
+    cursor: pointer;
+}
+
+
+
+
+
+@media (max-width: 1014px) {
+
+
+
+    .navbar {
+        align-items: center;
+
+    }
+
+    .navbar .logo img {
+        height: 40px;
+    }
+
+    .navbar .links {
+        font-size: 1rem;
+        gap: 10px;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    .main-area {
+        position: relative;
+    }
+
+    .right-side {
+        width: 100% !important;
+        padding: 0px;
+    }
+
+    .left-side {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 70% !important;
+        height: 100%;
+        transform: translateX(-100%);
+        z-index: 1;
+        padding: 0px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .left-side.open {
+        transform: translateX(0);
+        transition: transform 0.3s ease-in-out;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .toolbar {
+        height: 90px;
+    }
+
+
+
+
+
+
+    .leftSideHeading h2 {
+        font-size: 1.2rem;
+    }
+
+    .upload-btn {
+        font-size: 0.8rem;
+    }
+
+    .leftSideHeading .FileUploadcontainer {
+        height: 150px;
+        width: 150px;
+    }
+
+    .leftSideHeading .header svg {
+        height: 60px;
+    }
+
+    .leftSideHeading .header p {
+        font-size: 0.8rem;
+    }
+
+
+    #listOfAllQuestion .questionItem .questionSerialNumber {
+        font-size: 1rem;
+    }
+
+    #listOfAllQuestion .questionItem .questionTitle .title {
+        font-size: 1.1rem;
+        width: 180px;
+    }
+
+    #listOfAllQuestion .questionItem .questionTitle .QuestionUtil {
+        font-size: 0.5rem;
+        align-items: center;
+    }
+
+    #listOfAllQuestion .questionItem .questionTitle .QuestionUtil svg {
+        height: 10px;
+        width: 10px;
+        margin: 0px 3px;
+    }
+
+    #listOfAllQuestion .questionItem .kebabMenuIcon {
+        font-size: 1.5rem;
+    }
+
+    #listOfAllQuestion .questionItem .kebabMenuShow {
+        min-width: 100px;
+    }
+
+    #listOfAllQuestion .questionItem .kebabMenuShow p {
+        font-size: 0.75rem;
+    }
+
+    #collapse-LeftIcon {
+        display: none;
+    }
+
+    .right-side .examHeader h2 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .right-side .examHeader p {
+        font-size: 0.9rem;
+    }
+
+    .right-side .examHeader .info {
+        font-size: 0.9rem;
+    }
+
+    .right-side .QuestionList .eachQuestionItem .headOfQues h2 {
+        font-size: 1.1rem;
+    }
+
+    .right-side .QuestionList .eachQuestionItem .headOfQues svg {
+        height: 25px;
+        width: 25px;
+    }
+
+    .right-side .QuestionList .eachQuestionItem .headOfQues .tooltip-box {
+        right: -167px;
+        top: 46px;
+    }
+
+    .right-side .QuestionList .eachQuestionItem .headOfQues .tooltip-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .right-side .QuestionList .eachQuestionItem .headOfQues .icon-small {
+        width: 10px;
+        height: 10px;
+    }
+
+    .right-side .QuestionList .eachQuestionItem .headOfQues .tooltip-caret {
+        top: -6px;
+        left: 265px;
+    }
+
+    .right-side .QuestionList .eachQuestionItem .headOfQues .tooltip-text {
+        font-size: 10px;
+    }
+
+    .right-side .QuestionList .eachQuestionItem .headOfQues .tooltip-title {
+        font-size: 12px;
+    }
+
+    .right-side .QuestionList .eachQuestionItem .quesMainMCQ {
+        justify-content: center;
+    }
+
+    .right-side .QuestionList .eachQuestionItem .Options {
+        padding: 6px 8px;
+        width: 90%;
+    }
+
+
+
+}

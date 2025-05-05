@@ -1,0 +1,91 @@
+{
+    "Title": "General Knowledge",
+    "Description": "Class 11 Morning Shift Yearly Exam 2025",
+    "Time": "50 sec",
+    "marksPerQues": 1,
+    "cautions": ["Use Calculator fx-100ms", "If one question is selected it can't be undone"],
+    "list": {
+      "ques": [
+        {
+          "id": 1,
+          "quesTitle": "What is the name of water at 4°C temperature?",
+          "options": ["Cold Water", "Hot Water", "Dense Water", "Ice"],
+          "tips": "Think about water's unique density property.",
+          "ansindx": 2,
+          "type": "mcq"
+        },
+        {
+          "id": 2,
+          "quesTitle": "What is the capital city of France?",
+          "options": ["Paris", "London", "Berlin", "Madrid"],
+          "tips": "Recall European geography.",
+          "ansindx": 0,
+          "type": "mcq"
+        },
+        {
+          "id": 3,
+          "quesTitle": "Which planet is known as the Red Planet?",
+          "options": ["Jupiter", "Mars", "Venus", "Mercury"],
+          "tips": "Consider the planet's color.",
+          "ansindx": 1,
+          "type": "mcq"
+        },
+        {
+          "id": 4,
+          "quesTitle": "What is 2 + 2?",
+          "options": ["3", "4", "5", "6"],
+          "tips": "Basic arithmetic.",
+          "ansindx": 1,
+          "type": "mcq"
+        },
+        {
+          "id": 5,
+          "quesTitle": "Who wrote 'Romeo and Juliet'?",
+          "options": ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
+          "tips": "Think of famous playwrights.",
+          "ansindx": 1,
+          "type": "mcq"
+        },
+        {
+          "id": 6,
+          "quesTitle": "What is the chemical symbol for Gold?",
+          "options": ["Au", "Ag", "Fe", "Cu"],
+          "tips": "Check the periodic table.",
+          "ansindx": 0,
+          "type": "mcq"
+        },
+        {
+          "id": 7,
+          "quesTitle": "Which gas is most abundant in Earth's atmosphere?",
+          "options": ["Oxygen", "Carbon Dioxide", "Nitrogen", "Helium"],
+          "tips": "Consider atmospheric composition.",
+          "ansindx": 2,
+          "type": "mcq"
+        },
+        {
+          "id": 8,
+          "quesTitle": "What is the square root of 16?",
+          "options": ["2", "4", "6", "8"],
+          "tips": "Basic math operation.",
+          "ansindx": 1,
+          "type": "mcq"
+        },
+        {
+          "id": 9,
+          "quesTitle": "Which country hosted the 2020 Summer Olympics?",
+          "options": ["Brazil", "China", "Japan", "USA"],
+          "tips": "Recall recent Olympic history.",
+          "ansindx": 2,
+          "type": "mcq"
+        },
+        {
+          "id": 10,
+          "quesTitle": "What is the longest river in the world?",
+          "options": ["Amazon", "Nile", "Yangtze", "Mississippi"],
+          "tips": "Think about global geography.",
+          "ansindx": 1,
+          "type": "mcq"
+        }
+      ]
+    }
+  }
