@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Paper System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #timer {
+            font-family: monospace;
+            font-size: 28px;
+            margin: 20px 0;
+        }
+        #colon {
+            display: inline;
+        }
+        #exam-info, #question {
+            margin: 20px 0;
+            font-size: 18px;
+        }
+        #options {
+            margin: 15px 0;
+        }
+        #options label {
+            display: block;
+            margin: 5px 0;
+        }
+        #output {
+            margin: 20px 0;
+            white-space: pre-wrap;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h2>Question Paper System</h2>
+    <input type="file" id="jsonFileInput" accept=".json">
+    <div id="exam-info"></div>
+    <div id="question"></div>
+    <div id="options"></div>
+    <div id="timer"></div>
+    <div id="navigation">
+        <button id="prevBtn" class="hidden" onclick="prevQuestion()">Previous</button>
+        <button id="nextBtn" class="hidden" onclick="nextQuestion()">Next</button>
+        <button id="submitBtn" class="hidden" onclick="submitExam()">Submit Exam</button>
+    </div>
+    <pre id="output"></pre>
+
+    <script>
+        // State variables
+        let examData = null;
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let totalSeconds = 0;
+        let timerInterval = null;
+        let colonVisible = true;
+        let userAnswers = {};
+        let score = 0;
+
+        // Get elements
+        const fileInput = document.getElementById('jsonFileInput');
+        const examInfo = document.getElementById('exam-info');
+        const questionDisplay = document.getElementById('question');
+        const optionsDisplay = document.getElementById('options');
+        const timerDisplay = document.getElementById('timer');
+        const output = document.getElementById('output');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Parse time string to seconds
+        function parseTimeToSeconds(timeStr) {
+            if (!timeStr || typeof timeStr !== 'string') return 0;
+
+            timeStr = timeStr.toLowerCase().trim();
+            if (timeStr === 'min' || (timeStr.includes('min') && !/\d/.test(timeStr))) {
+                return 5 * 60;
+            }
+
+            let seconds = 0;
+            const regex = /(\d*\.?\d+)\s*(hour|hr|min|minute|sec|s)/g;
+            let match;
+
+            while ((match = regex.exec(timeStr)) !== null) {
+                const value = parseFloat(match[1]);
+                const unit = match[2];
+                if (unit.startsWith('hour') || unit.startsWith('hr')) {
+                    seconds += value * 3600;
+                } else if (unit.startsWith('min') || unit === 'minute') {
+                    seconds += value * 60;
+                } else if (unit.startsWith('sec') || unit === 's') {
+                    seconds += value;
+                }
+            }
+
+            return seconds;
+        }
+
+        // Format seconds to hh:mm or seconds
+        function formatTime(seconds) {
+            if (seconds < 60) {
+                return Math.floor(seconds).toString();
+            } else {
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                return `${hours.toString().padStart(2, '0')}<span id="colon">:</span>${minutes.toString().padStart(2, '0')}`;
+            }
+        }
+
+        // Start timer
+        function startTimer(seconds) {
+            totalSeconds = seconds;
+            if (timerInterval) clearInterval(timerInterval);
+
+            timerInterval = setInterval(() => {
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.innerHTML = 'Time Up!';
+                    output.textContent = 'Time up for this question. Seconds: 0';
+                    nextQuestion();
+                    return;
+                }
+
+                timerDisplay.innerHTML = formatTime(totalSeconds);
+                output.textContent = `Current time in seconds: ${totalSeconds}`;
+
+                const colon = document.getElementById('colon');
+                if (colon) {
+                    colonVisible = !colonVisible;
+                    colon.style.visibility = colonVisible ? 'visible' : 'hidden';
+                }
+
+                totalSeconds--;
+            }, 1000);
+        }
+
+        // Display current question
+        function displayQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                questionDisplay.textContent = 'All questions completed!';
+                optionsDisplay.innerHTML = '';
+                timerDisplay.innerHTML = '';
+                output.textContent = '';
+                prevBtn.classList.add('hidden');
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+                return;
+            }
+
+            const q = questions[currentQuestionIndex];
+            questionDisplay.innerHTML = `Question ${q.id}: ${q.quesTitle}<br><small>Tips: ${q.tips}</small>`;
+
+            optionsDisplay.innerHTML = '';
+            q.options.forEach((option, index) => {
+                const label = document.createElement('label');
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = `q${q.id}`;
+                radio.value = index;
+                radio.disabled = userAnswers[q.id] !== undefined;
+                if (userAnswers[q.id] === index) {
+                    radio.checked = true;
+                }
+                radio.addEventListener('change', () => handleAnswer(q.id, index));
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(` ${option}`));
+                optionsDisplay.appendChild(label);
+            });
+
+            prevBtn.classList.toggle('hidden', currentQuestionIndex === 0);
+            nextBtn.classList.toggle('hidden', currentQuestionIndex === questions.length - 1);
+            submitBtn.classList.toggle('hidden', currentQuestionIndex < questions.length - 1);
+
+            const questionTime = q.time || examData.Time;
+            const seconds = parseTimeToSeconds(questionTime);
+            if (seconds === 0) {
+                output.textContent = `Invalid time format for question ${q.id}.`;
+                return;
+            }
+            startTimer(seconds);
+        }
+
+        // Handle answer selection
+        function handleAnswer(questionId, selectedIndex) {
+            if (userAnswers[questionId] !== undefined) {
+                alert("You cannot change your answer once selected!");
+                return;
+            }
+            userAnswers[questionId] = selectedIndex;
+            displayQuestion();
+        }
+
+        // Navigation
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        // Submit exam
+        function submitExam() {
+            score = 0;
+            questions.forEach(q => {
+                if (userAnswers[q.id] === q.ansindx) {
+                    score += examData.marksPerQues;
+                }
+            });
+            questionDisplay.textContent = `Exam Completed! Your score: ${score}/${questions.length * examData.marksPerQues}`;
+            optionsDisplay.innerHTML = '';
+            timerDisplay.innerHTML = '';
+            output.textContent = '';
+            prevBtn.classList.add('hidden');
+            nextBtn.classList.add('hidden');
+            submitBtn.classList.add('hidden');
+        }
+
+        // File upload
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) {
+                output.textContent = 'No file selected.';
+                return;
+            }
+
+            if (file.type !== 'application/json') {
+                output.textContent = 'Please upload a valid JSON file.';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    examData = JSON.parse(e.target.result);
+                    questions = Array.isArray(examData.list.ques) ? examData.list.ques : [examData.list.ques];
+                    if (questions.length === 0) {
+                        output.textContent = 'No questions found in JSON.';
+                        return;
+                    }
+
+                    if (!examData.Title || !examData.Description || !examData.Time || !examData.marksPerQues || !examData.cautions) {
+                        output.textContent = 'Invalid exam data format.';
+                        return;
+                    }
+
+                    for (const q of questions) {
+                        if (!q.id || !q.quesTitle || !q.options || !q.tips || q.ansindx === undefined || !q.type) {
+                            output.textContent = 'Each question must have id, quesTitle, options, tips, ansindx, and type.';
+                            return;
+                        }
+                        if (q.ansindx < 0 || q.ansindx >= q.options.length) {
+                            output.textContent = `Invalid ansindx for question ${q.id}.`;
+                            return;
+                        }
+                    }
+
+                    examInfo.innerHTML = `
+                        <strong>${examData.Title}</strong><br>
+                        ${examData.Description}<br>
+                        Total Time: ${examData.Time}<br>
+                        Marks per Question: ${examData.marksPerQues}<br>
+                        Cautions: ${examData.cautions.join(', ')}
+                    `;
+
+                    currentQuestionIndex = 0;
+                    userAnswers = {};
+                    score = 0;
+                    localStorage.setItem('examData', JSON.stringify(examData));
+                    displayQuestion();
+                } catch (error) {
+                    output.textContent = 'Error parsing JSON: ' + error.message;
+                }
+            };
+            reader.readAsText(file);
+        });
+    </script>
+</body>
+</html>
